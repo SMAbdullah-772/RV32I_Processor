@@ -140,29 +140,6 @@ AUIPC
 
 > Instruction support will be added and verified incrementally as the processor develops.
 
-## Repository Structure
-
-```text
-RV32I-Verilog/
-│
-├── src/
-│   ├── cpu/
-│   ├── alu/
-│   ├── register_file/
-│   ├── control/
-│   ├── memory/
-│   └── ...
-│
-├── testbench/
-│   ├── ...
-│
-├── simulation/
-│   └── ...
-│
-└── README.md
-```
-
-The exact structure may evolve as the processor moves from the initial single-cycle implementation toward a pipelined architecture.
 
 ## Verification
 
@@ -231,6 +208,7 @@ This repository focuses on translating those concepts into **Verilog/SystemVeril
 * **RTL simulation**
 * **Waveform analysis**
 * **FPGA toolchain** *(planned)*
+* **Vivado AMD** *(planned)*
 
 ## Learning Goals
 
