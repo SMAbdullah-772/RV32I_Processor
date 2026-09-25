@@ -18,7 +18,7 @@ module c_decode(
     output reg  memwrite, branch, memread, regwrite, memtoreg, op_b,
     output reg  [2:0] aluop,
     output reg  [1:0] op_a,
-    output reg  [1:0] extend_sel,
+    output reg  [1:0] extend_sel,   // imm select
     output reg  [1:0] nextpc_sel
 );
     always @(*) begin
@@ -30,12 +30,12 @@ module c_decode(
         op_b       = 1'b0;
         op_a       = 2'd0;
         aluop      = 3'b000;
-        extend_sel = 2'd0;
-        nextpc_sel = 2'd0;
+        extend_sel = 2'b00;
+        nextpc_sel = 2'b00;
 
         if (r_type) begin
             regwrite = 1'b1;
-            aluop    = 3'b000;   
+            aluop    = 3'b000;
         end
         else if (i_type) begin
             regwrite   = 1'b1;
@@ -47,7 +47,7 @@ module c_decode(
             memwrite   = 1'b1;
             op_b       = 1'b1;
             aluop      = 3'b101;
-            extend_sel = 2'b00;  
+            extend_sel = 2'b00;
         end
         else if (l_type) begin
             memread    = 1'b1;
@@ -61,6 +61,7 @@ module c_decode(
             branch     = 1'b1;
             aluop      = 3'b010;
             nextpc_sel = 2'b01;
+            extend_sel = 2'b00;
         end
         else if (lui_type) begin
             regwrite   = 1'b1;
@@ -72,9 +73,11 @@ module c_decode(
         else if (jalr_type) begin
             regwrite   = 1'b1;
             op_a       = 2'b10;
-            op_b       = 1'b1;  
             aluop      = 3'b011;
             nextpc_sel = 2'b11;
+            // op_b intentionally left at default 0 — table marks it "x";
+            // JALR's real target comes from the separate Jalr_Target module,
+            // not through the main ALU's OpB
         end
         else if (jal_type) begin
             regwrite   = 1'b1;
