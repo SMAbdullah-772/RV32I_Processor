@@ -103,7 +103,7 @@ module rv32i_core_top (
         case (extend_sel)
             2'b00:   imm_out = S_type;   // store
             2'b01:   imm_out = B_type;   // unused by current decode, kept for completeness
-            2'b10:   imm_out = U_type;   // lui
+            2'b10:   imm_out = U_type;   // lui, auipc
             2'b11:   imm_out = I_type;   // addi/andi/... , loads
             default: imm_out = 32'b0;
         endcase
@@ -116,6 +116,7 @@ module rv32i_core_top (
     always @(*) begin
         case (op_a_sel)
             2'b00:   alu_a = rf_op_a;    // r/i/l/s/b types
+            2'b01:   alu_a = pc_out;     // auipc -> PC + imm
             2'b10:   alu_a = pc_plus4;   // jal/jalr -> link address
             2'b11:   alu_a = 32'b0;      // lui -> 0 + imm
             default: alu_a = rf_op_a;
